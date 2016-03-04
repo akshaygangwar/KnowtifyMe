@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">KnowtifyMe</string>
+
+    <string name="hello_world">What would you like to keep in mind?</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_text">Send</string>
+</resources>

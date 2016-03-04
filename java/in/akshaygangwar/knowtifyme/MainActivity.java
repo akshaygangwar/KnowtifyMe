@@ -1,0 +1,75 @@
+package in.akshaygangwar.knowtifyme;
+
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText reminderEditBox;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final int screen_width = getResources().getDisplayMetrics().widthPixels;
+        final int new_window_width = screen_width * 95 / 100;
+        WindowManager.LayoutParams layout = getWindow().getAttributes();
+        layout.width = Math.max(layout.width, new_window_width);
+        getWindow().setAttributes(layout);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        reminderEditBox = (EditText) findViewById(R.id.editTextBox);
+    }
+
+    public void startNotification(View v) {
+        int notificationID = 001;
+        String putText = reminderEditBox.getText().toString();
+        if (!(putText.equals(""))) {
+            createNotification(notificationID, putText);
+        }
+        finish();
+    }
+
+    private void createNotification(int notificationID, String notificationContent) {
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("KnowtifyMe")
+                .setContentText(notificationContent);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(notificationID, notificationBuilder.build());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+}
