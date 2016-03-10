@@ -1,5 +1,6 @@
 package in.akshaygangwar.knowtifyme;
 
+import android.app.Notification;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +12,12 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText reminderEditBox;
+    static int notificationID = 1;
 
     @Override
     protected void onStart() {
@@ -33,7 +37,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startNotification(View v) {
-        int notificationID = 001;
+        if(notificationID <= 10) {
+            notificationID++;
+        } else {
+            notificationID = 2;
+            Toast.makeText(MainActivity.this, "Too many reminders!", Toast.LENGTH_SHORT).show();
+        }
         String putText = reminderEditBox.getText().toString();
         if (!(putText.equals(""))) {
             createNotification(notificationID, putText);
@@ -42,10 +51,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createNotification(int notificationID, String notificationContent) {
+
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
+        bigTextStyle.setBigContentTitle("KnowtifyMe");
+        bigTextStyle.bigText(notificationContent);
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("KnowtifyMe")
-                .setContentText(notificationContent);
+                .setContentText(notificationContent)
+                .setStyle(bigTextStyle);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(notificationID, notificationBuilder.build());
